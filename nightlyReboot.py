@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import time
+import datetime
 import sched
 import requests
 from urllib3.exceptions import InsecureRequestWarning
@@ -43,14 +44,19 @@ def initiate_reboot(auth_val=DEFAULT_PASSWORD, ip=None, idx=None):
 s = sched.scheduler(time.time, time.sleep)
 
 def nightly_reboot():
-    now = time.localtime()
-    hour = now.tm_hour
-    min = now.tm_min
-    sec = now.tm_sec
-    interval = 3 #Interval for when the script checks the time in seconds. Make sure the interval is guaranteed to check during reboot trigger window
+    now = datetime.datetime.now()
+    day = datetime.date(now.year, now.month, now.day).isoweekday()
+    hour = now.hour
+    min = now.minute
+    sec = now.second
+    #Interval for when the script checks the time in seconds. Make sure the interval is guaranteed to check during reboot trigger window
+    if day == 6:
+        interval = 3
+    else:
+        interval = 11 * 60 * 60
 
     print(f'{hour} {min} {sec}')
-    if hour == 13 and min == 29 and sec >= 10: #Time window for reboot trigger
+    if hour == 2 and min == 00 and sec >= 30 and day == 6: #Time window for reboot trigger
         print('Reboot initiated')
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             for idx, value in enumerate(ws.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
