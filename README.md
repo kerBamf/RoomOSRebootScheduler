@@ -17,19 +17,19 @@ is saved in the next column of the .xlsx file for logging purposes.
 
 ## DEPENDENCIES AND REQUIREMENTS
 
-Python Packages:
-openpyxl - python excel editor
-requests - simple http request library
-python-dotenv - enables use of .env file for environmental variables
+Python Packages:  
+openpyxl - python excel editor  
+requests - simple http request library  
+python-dotenv - enables use of .env file for environmental variables  
 
-Environment Variables:
-PASSWORD - base64 encoded credentials for the devices
-FILENAME - the name of the .xlsx file in the root director that contains the IP addresses NOTE: Ips must be in Column C of the .xlsx file. Returned stats codes are saved in column D.
+Environment Variables:  
+PASSWORD - base64 encoded credentials for the devices  
+FILENAME - the name of the .xlsx file in the root director that contains the IP addresses NOTE: Ips must be in Column C of the .xlsx file. Returned stats codes are saved in column D.  
 
-Room OS Versions Tested:
-  Room Series:
-    Room OS 10.19
-    Room OS 11.7
-  Desk Series:
-    Pending
+Room OS Versions Tested:  
+  Room Series:  
+    Room OS 10.19  
+    Room OS 11.7  
+  Desk Series:  
+    Pending  
 
