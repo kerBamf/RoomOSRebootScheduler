@@ -50,7 +50,7 @@ def nightly_reboot():
     interval = 3 #Interval for when the script checks the time in seconds. Make sure the interval is guaranteed to check during reboot trigger window
 
     print(f'{hour} {min} {sec}')
-    if hour == 10 and min == 34 and sec >= 10: #Time window for reboot trigger
+    if hour == 13 and min == 29 and sec >= 10: #Time window for reboot trigger
         print('Reboot initiated')
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             for idx, value in enumerate(ws.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):

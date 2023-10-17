@@ -1,0 +1,12 @@
+<Extensions><Version>1.9</Version><Panel>
+    <Order>2</Order>
+    <PanelId>aux_reset_cancel</PanelId>
+    <Origin>local</Origin>
+    <Location>HomeScreenAndCallControls</Location>
+    <Icon>Power</Icon>
+    <Color>#FF1B1B</Color>
+    <Name>CANCEL REBOOT</Name>
+    <ActivityType>Custom</ActivityType>
+    <Visibility>Hidden</Visibility>
+  </Panel>
+  </Extensions>
