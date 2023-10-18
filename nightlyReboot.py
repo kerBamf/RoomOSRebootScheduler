@@ -24,7 +24,7 @@ ws = wb.active
 #Defining reboot function
 DEFAULT_PASSWORD = 'Basic ' + PASSWORD
 
-def initiate_reboot(auth_val=DEFAULT_PASSWORD, ip=None, idx=None):
+def reboot_request(auth_val=DEFAULT_PASSWORD, ip=None, idx=None):
     url = f"https://{ip}/putxml"
     cell_no = idx+2
     payload = "<Command>\r\n\t<Standby>\r\n\t\t<Deactivate></Deactivate>\r\n\t</Standby>\r\n\t<UserInterface>\r\n\t\t<Message>\r\n\t\t\t<Alert>\r\n\t\t\t\t<Display>\r\n\t\t\t\t\t<Duration>10</Duration>\r\n\t\t\t\t\t<Text>Use touchpanel to cancel reboot</Text>\r\n\t\t\t\t\t<Title>NIGHTLY REBOOT INITIATED</Title>\r\n\t\t\t\t</Display>\r\n\t\t\t</Alert>\r\n\t\t</Message>\r\n\t</UserInterface>\r\n</Command>"
@@ -38,6 +38,12 @@ def initiate_reboot(auth_val=DEFAULT_PASSWORD, ip=None, idx=None):
     except requests.exceptions.HTTPError as err:
         print(err.response.status_code)
         ws[f"D{cell_no}"] = err.response.status_code
+
+def initiate_reboot():
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        for idx, value in enumerate(ws.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
+            ip = value[0]
+            executor.submit(reboot_request, DEFAULT_PASSWORD, ip, idx)
 
 
 #Setting up reboot timer
@@ -58,11 +64,7 @@ def nightly_reboot():
     print(f'{hour} {min} {sec}')
     if hour == 2 and min == 00 and sec >= 30 and day == 6: #Time window for reboot trigger
         print('Reboot initiated')
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            for idx, value in enumerate(ws.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
-                ip = value[0]
-                executor.submit(initiate_reboot, DEFAULT_PASSWORD, ip, idx)
-        wb.save(FILENAME)
+        initiate_reboot()
         time.sleep(60)  #Delay for restarting timer. Make sure it is enough time to exit reboot trigger window
         s.enter(interval, 1, nightly_reboot, ())
     else:
