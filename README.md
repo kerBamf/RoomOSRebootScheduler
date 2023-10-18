@@ -24,7 +24,7 @@ python-dotenv - enables use of .env file for environmental variables
 
 Environment Variables:  
 PASSWORD - base64 encoded credentials for the devices  
-FILENAME - the name of the .xlsx file in the root directory that contains the IP addresses NOTE: IPs must be in Column C of the .xlsx file. Returned stats codes are saved in column D.  
+FILENAME - the name of the .xlsx file in the root directory that contains the IP addresses NOTE: IPs must be in Column C of the .xlsx file. Returned status codes are saved in column D.  
 
 Room OS Versions Tested:  
   Room Series:  
