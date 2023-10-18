@@ -44,7 +44,7 @@ def initiate_reboot():
         for idx, value in enumerate(ws.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
             ip = value[0]
             executor.submit(reboot_request, DEFAULT_PASSWORD, ip, idx)
-    wb.save()
+    wb.save(FILENAME)
 
 
 #Setting up reboot timer
