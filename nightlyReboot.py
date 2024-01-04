@@ -17,8 +17,8 @@ FILENAME = os.environ.get("FILENAME")
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 #Loading excel workbook with IPs
-wb = load_workbook(FILENAME)
-ws = wb.active
+codecList = load_workbook(FILENAME)
+codecSheet = codecList.active
 
 
 #Defining reboot function
@@ -34,17 +34,17 @@ def reboot_request(auth_val=DEFAULT_PASSWORD, ip=None, idx=None):
         response = requests.request("POST", url, headers=headers, data=payload, verify=False)
         response.raise_for_status()
         print(response.status_code)
-        ws[f"D{cell_no}"] = response.status_code
+        codecSheet[f"D{cell_no}"] = response.status_code
     except requests.exceptions.HTTPError as err:
         print(err.response.status_code)
-        ws[f"D{cell_no}"] = err.response.status_code
+        codecSheet[f"D{cell_no}"] = err.response.status_code
 
 def initiate_reboot():
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        for idx, value in enumerate(ws.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
+        for idx, value in enumerate(codecSheet.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
             ip = value[0]
             executor.submit(reboot_request, DEFAULT_PASSWORD, ip, idx)
-    wb.save(FILENAME)
+    codecList.save("output.xlsx")
 
 
 #Setting up reboot timer
@@ -69,7 +69,7 @@ def nightly_reboot():
         time.sleep(60)  #Delay for restarting timer. Make sure it is enough time to exit reboot trigger window
         s.enter(interval, 1, nightly_reboot, ())
     else:
-        s.enter(interval, 1, nightly_reboot, ())
+        s.enter(interval, 1, nightly_reboot, ()) 
 
 if __name__ == "__main__":
     s.enter(0, 1, nightly_reboot, ())
