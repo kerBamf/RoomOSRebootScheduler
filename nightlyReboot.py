@@ -63,7 +63,7 @@ def nightly_reboot():
     #     interval = 11 * 60 * 60
 
     print(f'{hour} {min} {sec}')
-    if hour == 2 and min == 00 and sec >= 30 and day == 6: #Time window for reboot trigger
+    if hour == 2 and min == 00 and sec >= 30: #Time window for reboot trigger
         print('Reboot initiated')
         initiate_reboot()
         time.sleep(60)  #Delay for restarting timer. Make sure it is enough time to exit reboot trigger window
