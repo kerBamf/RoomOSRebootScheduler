@@ -57,10 +57,10 @@ def nightly_reboot():
     min = now.minute
     sec = now.second
     #Interval for when the script checks the time in seconds. Make sure the interval is guaranteed to check during reboot trigger window
-    if day == 6:
-        interval = 3
-    else:
-        interval = 11 * 60 * 60
+    # if day == 6:
+    interval = 10
+    # else:
+    #     interval = 11 * 60 * 60
 
     print(f'{hour} {min} {sec}')
     if hour == 2 and min == 00 and sec >= 30 and day == 6: #Time window for reboot trigger
