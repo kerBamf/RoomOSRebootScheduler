@@ -1,7 +1,2 @@
 .env
-../RebootFiles/test_file.xlsx
-../RebootFiles/Test_System-1.xlsx
 day_of_week_test.py
-../RebootFiles/output.xlsx
-../RebootFiles/test_output.xlsx
-../RebootFiles/codec_list.xlsx
