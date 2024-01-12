@@ -65,7 +65,7 @@ def initiate_reboot(excel_file):
             for idx, value in enumerate(codecSheet.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
                 ip = value[0]
                 executor.submit(reboot_request, DEFAULT_PASSWORD, ip, idx, codecList)
-        codecList.save("output.xlsx")
+        codecList.save("../RebootFile/output.xlsx")
         #Consider adding ping function for later version here
         send_email()
     except Exception as error:
