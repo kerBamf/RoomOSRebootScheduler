@@ -7,6 +7,8 @@ import requests
 from urllib3.exceptions import InsecureRequestWarning
 from openpyxl import load_workbook
 import concurrent.futures
+import smtplib
+from email.message import EmailMessage
 
 #Loading environment variables
 load_dotenv()
@@ -20,6 +22,24 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 codecList = load_workbook(FILENAME)
 codecSheet = codecList.active
 
+#Building email function for output report
+
+def send_email():
+
+    text = 'Good Morning,\n Here is the weekly zoom removal report.'
+    msg = EmailMessage()
+    msg['From'] = 'codec_reboot_report_noreply@mskcc.org'
+    msg['To'] = 'pedigoz@mskcc.org'
+    msg['Subject'] = 'Codec Reboot Output Report'
+    msg.set_content(text)
+    server = 'exchange2007.mskcc.org'
+    port = 25
+    excel_file = 'output.xlsx'
+    file_data = open(excel_file, 'rb').read()
+    msg.add_attachment(file_data, maintype='application', subtype='xlsx', filename=excel_file)
+    smtp = smtplib.SMTP(server, port)
+    smtp.send_message(msg)
+    smtp.quit()
 
 #Defining reboot function
 DEFAULT_PASSWORD = 'Basic ' + PASSWORD
@@ -45,6 +65,7 @@ def initiate_reboot():
             ip = value[0]
             executor.submit(reboot_request, DEFAULT_PASSWORD, ip, idx)
     codecList.save("output.xlsx")
+    send_email()
 
 
 #Setting up reboot timer
