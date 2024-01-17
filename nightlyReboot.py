@@ -23,15 +23,15 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 def send_email():
 
-    text = 'Good Morning,\n Here is the weekly zoom removal report.'
+    text = 'Good Morning,\n Here is the report from the previous automated reboot.'
     msg = EmailMessage()
     msg['From'] = 'codec_reboot_report_noreply@mskcc.org'
     msg['To'] = 'pedigoz@mskcc.org'
-    msg['Subject'] = 'Codec Reboot Output Report'
+    msg['Subject'] = 'Codec Reboot Report'
     msg.set_content(text)
     server = 'exchange2007.mskcc.org'
     port = 25
-    excel_file = '../RebootFiles/output.xlsx'
+    excel_file = 'output.xlsx'
     file_data = open(excel_file, 'rb').read()
     msg.add_attachment(file_data, maintype='application', subtype='xlsx', filename=excel_file)
     smtp = smtplib.SMTP(server, port)
@@ -65,7 +65,7 @@ def initiate_reboot(excel_file):
             for idx, value in enumerate(codecSheet.iter_rows(min_row=2, min_col=3, max_col=3, values_only=True)):
                 ip = value[0]
                 executor.submit(reboot_request, DEFAULT_PASSWORD, ip, idx, codecList)
-        codecList.save("../RebootFiles/output.xlsx")
+        codecList.save("output.xlsx")
         #Consider adding ping function for later version here
         send_email()
     except Exception as error:
