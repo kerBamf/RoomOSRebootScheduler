@@ -66,6 +66,8 @@ function visualCount(count) {
 function cancelMessage() {
   xapi.Command.UserInterface.Message.Alert.Display(
     { Duration: 4, Text: 'System will continue normal operation', Title: "REBOOT CANCELLED" });
+  setTimeout(() => {
+    xapi.Config.UserInterface.OSD.Mode.set('Unobstructed')}, 5000)
 }
 
 
@@ -75,6 +77,7 @@ function cancelMessage() {
 xapi.Event.UserInterface.Message.Alert.Display.on((event) => {
   console.log(event)
   if (event.Title == 'NIGHTLY REBOOT INITIATED') {
+    xapi.Config.UserInterface.OSD.Mode.set('Auto')
     xapi.Command.Video.Graphics.Text.Display(
       { Target: 'localOutput', Text: 'NIGHTLY REBOOT INITIATED' });
     xapi.Command.UserInterface.Extensions.Widget.SetValue(
@@ -99,3 +102,4 @@ xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
   }
 })
 
+hideButton()
