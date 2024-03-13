@@ -86,7 +86,7 @@ def nightly_reboot():
     if day == 6:
         interval = 10
     else:
-        interval = 11 * 60 * 60
+        interval = 60 * 60
 
     print(f'{hour} {min} {sec}')
     if day == 6 and hour == 2 and min == 30 and sec >= 30: #Time window for reboot trigger
