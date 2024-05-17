@@ -82,6 +82,8 @@ def nightly_reboot():
     hour = now.hour
     min = now.minute
     sec = now.second
+    interval = None
+    
     #Interval for when the script checks the time in seconds. Make sure the interval is guaranteed to check during reboot trigger window
     if day == 6:
         interval = 10
