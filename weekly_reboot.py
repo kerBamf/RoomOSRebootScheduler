@@ -76,7 +76,7 @@ def initiate_reboot(excel_file):
 #Setting up reboot timer
 s = sched.scheduler(time.time, time.sleep)
 
-def nightly_reboot():
+def weekly_reboot():
     now = datetime.datetime.now()
     day = datetime.date(now.year, now.month, now.day).isoweekday()
     hour = now.hour
@@ -95,11 +95,11 @@ def nightly_reboot():
         print('Reboot initiated')
         initiate_reboot(FILENAME)
         time.sleep(60)  #Delay for restarting timer. Make sure it is enough time to exit reboot trigger window
-        s.enter(interval, 1, nightly_reboot, ())
+        s.enter(interval, 1, weekly_reboot, ())
     else:
-        s.enter(interval, 1, nightly_reboot, ()) 
+        s.enter(interval, 1, weekly_reboot, ()) 
 
 if __name__ == "__main__":
-    s.enter(0, 1, nightly_reboot, ())
+    s.enter(0, 1, weekly_reboot, ())
     s.run()
 

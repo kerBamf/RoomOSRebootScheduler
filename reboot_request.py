@@ -1,4 +1,4 @@
-from nightlyReboot import reboot_request
+from weekly_reboot import reboot_request
 
 codec_ip = input('Enter codec ip: ')
 
