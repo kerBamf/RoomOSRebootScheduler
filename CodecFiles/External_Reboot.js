@@ -1,6 +1,6 @@
 import xapi from 'xapi';
 
-let reset = true
+let reset = null
 let count = null
 
 //Functions
@@ -9,6 +9,7 @@ let count = null
 function resetCountdown() {
   xapi.Command.UserInterface.Extensions.Panel.Open({PanelId: "reset_panel"})
   showButton()
+  reset = true
   count = 60
     let countdown = setInterval(() => {
       console.log(count)
@@ -26,7 +27,7 @@ function resetCountdown() {
         cancelMessage()
       }
       count = count - 1
-    }, 1300)
+    }, 1100)
 }
 
 //Reset cancellor to be triggered by button in reset panel as well as on main screen
@@ -55,7 +56,7 @@ function visualCount(count) {
     { Value: count, WidgetId: 'widget_24' });
   xapi.Command.Video.Graphics.Text.Display(
     { Target: 'localOutput', Text: `REBOOT WILL OCCUR IN ${count} SECONDS` });
-  if (count % 2 == 0 || count == null) {
+  if (count % 2 == 0) {
     xapi.Command.UserInterface.Extensions.Panel.Update({ PanelId: 'aux_reset_cancel', Color: '#FF1B1B' })
   } else {
     xapi.Command.UserInterface.Extensions.Panel.Update({ PanelId: 'aux_reset_cancel', Color: '#FF9D1B' })
@@ -65,9 +66,7 @@ function visualCount(count) {
 //Cancel message alerting users that reset was successfully aborted
 function cancelMessage() {
   xapi.Command.UserInterface.Message.Alert.Display(
-    { Duration: 4, Text: 'System will continue normal operation', Title: "REBOOT CANCELLED" });
-  setTimeout(() => {
-    xapi.Config.UserInterface.OSD.Mode.set('Unobstructed')}, 5000)
+    {Duration: 4, Text: 'System will continue normal operation', Title: "REBOOT CANCELLED" });
 }
 
 
@@ -75,20 +74,19 @@ function cancelMessage() {
 
 //Listener for cue from external server
 xapi.Event.UserInterface.Message.Alert.Display.on((event) => {
-  console.log(event)
-  if (event.Title == 'NIGHTLY REBOOT INITIATED') {
-    xapi.Config.UserInterface.OSD.Mode.set('Auto')
+  if (event.Title == 'AUTOMATED REBOOT INITIATED') {
     xapi.Command.Video.Graphics.Text.Display(
-      { Target: 'localOutput', Text: 'NIGHTLY REBOOT INITIATED' });
+      { Target: 'localOutput', Text: 'AUTOMATED REBOOT INITIATED' });
     xapi.Command.UserInterface.Extensions.Widget.SetValue(
       { Value: "", WidgetId: 'widget_24' });
     setTimeout(() => {
-      resetCountdown();
+      resetCountdown()
     }, 10000)
   };
 });
 
 xapi.Event.UserInterface.Extensions.Widget.Action.on((event) => {
+  console.log(event)
   if (event.WidgetId == 'cancel_reset') {
     cancelReset()
     hideButton()
@@ -96,10 +94,10 @@ xapi.Event.UserInterface.Extensions.Widget.Action.on((event) => {
 })
 
 xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
+  console.log(event)
   if (event.PanelId == 'aux_reset_cancel') {
     cancelReset()
     hideButton()
   }
 })
 
-hideButton()

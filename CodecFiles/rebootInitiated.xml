@@ -1,13 +1,15 @@
-<Extensions><Version>1.9</Version><Panel>
+<Extensions>
+  <Version>1.11</Version>
+  <Panel>
     <Order>1</Order>
     <PanelId>reset_panel</PanelId>
     <Origin>local</Origin>
     <Location>Hidden</Location>
     <Icon>Lightbulb</Icon>
-    <Name> Nightly Reboot</Name>
+    <Name>Reboot Initiated</Name>
     <ActivityType>Custom</ActivityType>
     <Page>
-      <Name>NIGHTLY REBOOT INITIATED</Name>
+      <Name>AUTOMATED REBOOT INITIATED</Name>
       <Row>
         <Name>TIME UNTIL REBOOT:</Name>
         <Widget>
@@ -49,4 +51,4 @@
       <Options/>
     </Page>
   </Panel>
-  </Extensions>
+</Extensions>
