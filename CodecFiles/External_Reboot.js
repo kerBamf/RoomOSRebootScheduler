@@ -3,6 +3,79 @@ import xapi from 'xapi';
 let reset = null
 let count = null
 
+//Building reboot cancel panel
+const panelXML = `<Extensions>
+  <Panel>
+    <Order>1</Order>
+    <PanelId>reset_panel</PanelId>
+    <Origin>local</Origin>
+    <Location>Hidden</Location>
+    <Icon>Lightbulb</Icon>
+    <Name>Reboot Initiated</Name>
+    <ActivityType>Custom</ActivityType>
+    <Page>
+      <Name>AUTOMATED REBOOT INITIATED</Name>
+      <Row>
+        <Name>TIME UNTIL REBOOT:</Name>
+        <Widget>
+          <WidgetId>widget_24</WidgetId>
+          <Name/>
+          <Type>Text</Type>
+          <Options>size=1;fontSize=normal;align=center</Options>
+        </Widget>
+        <Widget>
+          <WidgetId>widget_25</WidgetId>
+          <Type>Spacer</Type>
+          <Options>size=1</Options>
+        </Widget>
+        <Widget>
+          <WidgetId>widget_26</WidgetId>
+          <Type>Spacer</Type>
+          <Options>size=1</Options>
+        </Widget>
+        <Widget>
+          <WidgetId>widget_27</WidgetId>
+          <Type>Spacer</Type>
+          <Options>size=1</Options>
+        </Widget>
+      </Row>
+      <Row>
+        <Name>Cancel Reset?</Name>
+        <Widget>
+          <WidgetId>cancel_reset</WidgetId>
+          <Name>CANCEL</Name>
+          <Type>Button</Type>
+          <Options>size=3</Options>
+        </Widget>
+        <Widget>
+          <WidgetId>widget_23</WidgetId>
+          <Type>Spacer</Type>
+          <Options>size=1</Options>
+        </Widget>
+      </Row>
+      <Options/>
+    </Page>
+  </Panel>
+</Extensions>`
+
+xapi.Command.UserInterface.Extensions.Panel.Save({ PanelId: 'reset_panel' }, panelXML);
+
+//Building reboot cancel button
+const buttonXML = `<Extensions>
+  <Panel>
+    <Order>2</Order>
+    <PanelId>aux_reset_cancel</PanelId>
+    <Origin>local</Origin>
+    <Location>HomeScreenAndCallControls</Location>
+    <Icon>Power</Icon>
+    <Color>#FF1B1B</Color>
+    <Name>CANCEL REBOOT</Name>
+    <ActivityType>Custom</ActivityType>
+  </Panel>
+</Extensions>`
+
+xapi.Command.UserInterface.Extensions.Panel.Save({ PanelId: 'aux_reset_cancel'}, buttonXML)
+
 //Functions
 
 //Main Reset Countdown Function
@@ -100,4 +173,3 @@ xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
     hideButton()
   }
 })
-
